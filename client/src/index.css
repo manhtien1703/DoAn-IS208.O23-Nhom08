@@ -85,3 +85,30 @@ button:focus-visible {
 .quill {
   height: 100%;
 }
+
+.quill img{
+  margin: auto;
+}
+
+.quill iframe{
+  margin: auto;
+  width: 50%;
+  height: 400px;
+}
+
+/* căn giữa hình ảnh */
+.content-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.content-container p{
+  margin-bottom: 10px;
+  font-size:larger ;
+  text-align: justify;
+}
+
+.content-container img{
+
+    margin: auto;
+}

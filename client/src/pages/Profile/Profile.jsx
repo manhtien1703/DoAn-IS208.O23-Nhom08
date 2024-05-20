@@ -7,9 +7,11 @@ import { useDispatch } from "react-redux";
 import { logout } from "../../redux/slices/authSlice";
 import ProfileTab from "../../components/Profile/ProfileTab";
 import RequestLeaveTab from "../../components/Profile/RequestLeaveTab";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
   const [activeTab, setActiveTab] = useState(0);
+  const userRole = "Truong phong";
   const dispatch = useDispatch();
 
   const tabs = ["Hồ sơ cá nhân", "Yêu cầu nghỉ phép"];
@@ -53,6 +55,28 @@ export default function Profile() {
                 {tab}
               </li>
             ))}
+            {userRole == "truong phong" && (
+              <li>
+                <Link
+                  to="/manager-dasbroad"
+                  onClick={handleLogout}
+                  className=" w-full flex cursor-pointer p-2 pl-5 rounded gap-3 items-center"
+                >
+                  Trang quản lý
+                </Link>
+              </li>
+            )}
+            {userRole == "phong nhan su" && (
+              <li>
+                <Link
+                  to="/admin-dasbroad"
+                  onClick={handleLogout}
+                  className=" w-full flex cursor-pointer p-2 pl-5 rounded gap-3 items-center"
+                >
+                  Trang quản lý
+                </Link>
+              </li>
+            )}
             <li>
               <button
                 onClick={handleLogout}

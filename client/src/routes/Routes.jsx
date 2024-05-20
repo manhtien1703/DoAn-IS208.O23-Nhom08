@@ -7,6 +7,8 @@ import RoomSchedule from "../pages/RoomSchedule";
 import Profile from "../pages/Profile/Profile";
 import News from "../pages/News";
 import TextEditor from "../components/TextEditor/TextEditor";
+import NewsDetail from "../pages/News/NewDetail";
+import Notification from "../pages/Notification";
 
 const WebRoutes = () => {
   return (
@@ -25,6 +27,30 @@ const WebRoutes = () => {
         element={
           <ProtectedRoute>
             <News />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/news/:slug"
+        element={
+          <ProtectedRoute>
+            <NewsDetail />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/notifications"
+        element={
+          <ProtectedRoute>
+            <Notification />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/notifications/:slug"
+        element={
+          <ProtectedRoute>
+            <NewsDetail />
           </ProtectedRoute>
         }
       />

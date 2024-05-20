@@ -50,8 +50,8 @@ function NewsList({ newsList, itemsPerPage }) {
 }
 
 NewsList.propTypes = {
-  newsList: PropTypes.func.isRequired,
-  itemsPerPage: PropTypes.func.isRequired,
+  newsList: PropTypes.array.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
 };
 
 export default NewsList;
