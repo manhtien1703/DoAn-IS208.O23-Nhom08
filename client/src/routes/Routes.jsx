@@ -9,6 +9,7 @@ import News from "../pages/News";
 import TextEditor from "../components/TextEditor/TextEditor";
 import NewsDetail from "../pages/News/NewDetail";
 import Notification from "../pages/Notification";
+import NoPermission from "../pages/NoPermission";
 
 const WebRoutes = () => {
   return (
@@ -72,6 +73,7 @@ const WebRoutes = () => {
       />
       <Route path="/Test" element={<TextEditor />} />
       <Route path="/*" element={<NotFound />} />
+      <Route path="/access-deny" element={<NoPermission />} />
     </Routes>
   );
 };

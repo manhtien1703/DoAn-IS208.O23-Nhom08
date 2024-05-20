@@ -4,6 +4,7 @@ import { selectUser } from "../../redux/slices/authSlice";
 import { FaBell } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { slugify } from "../../utils";
 
 const navList = [
   {
@@ -99,7 +100,11 @@ const Header = () => {
                           key={notification.id}
                           className="py-5 border-b border-gray-200"
                         >
-                          {notification.message}
+                          <Link to={slugify(notification.message)}>
+                            <p className="pl-3 truncate">
+                              {notification.message}
+                            </p>
+                          </Link>
                         </li>
                       ))}
                     </ul>

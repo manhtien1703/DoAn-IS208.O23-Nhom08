@@ -36,7 +36,7 @@ const ProfileTab = () => {
       email: "zxcv08122003@gmail.com",
       cccd: "0123812791242",
       phone: "02938743842",
-      positon: "Nhân viên",
+      positon: "Trưởng phòng",
     }));
   }, []);
 

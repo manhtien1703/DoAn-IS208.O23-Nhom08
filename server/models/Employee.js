@@ -30,12 +30,16 @@ Employee.init(
       allowNull: false,
       references: {
         model: Department,
-        key: "DepartmentID", 
+        key: "DepartmentID",
       },
     },
     Role: {
       type: DataTypes.ENUM("Nhan vien", "Truong phong", "Phong nhan su"),
       defaultValue: "Nhan vien",
+    },
+    Avatar: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     CreatedAt: {
       type: DataTypes.DATE,

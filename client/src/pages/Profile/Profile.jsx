@@ -8,6 +8,7 @@ import { logout } from "../../redux/slices/authSlice";
 import ProfileTab from "../../components/Profile/ProfileTab";
 import RequestLeaveTab from "../../components/Profile/RequestLeaveTab";
 import { Link } from "react-router-dom";
+import { slugify } from "../../utils";
 
 export default function Profile() {
   const [activeTab, setActiveTab] = useState(0);
@@ -55,7 +56,7 @@ export default function Profile() {
                 {tab}
               </li>
             ))}
-            {userRole == "truong phong" && (
+            {slugify(userRole) == slugify("truong phong") && (
               <li>
                 <Link
                   to="/manager-dasbroad"
@@ -66,7 +67,7 @@ export default function Profile() {
                 </Link>
               </li>
             )}
-            {userRole == "phong nhan su" && (
+            {slugify(userRole) == slugify("phong nhan su") && (
               <li>
                 <Link
                   to="/admin-dasbroad"

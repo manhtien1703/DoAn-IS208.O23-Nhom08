@@ -3,20 +3,18 @@ import connectDatabase from "../configs/DBConfig";
 
 const sequelize = connectDatabase();
 
-class Announcement extends Model {}
+class MeetingRoom extends Model {}
 
-Announcement.init(
+MeetingRoom.init(
   {
-    AnnouncementID: {
+    RoomID: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
     },
-    Title: {
+    RoomName: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    Content: {
-      type: DataTypes.TEXT,
       allowNull: false,
     },
     CreatedAt: {
@@ -30,20 +28,13 @@ Announcement.init(
       defaultValue: DataTypes.NOW,
       onUpdate: DataTypes.NOW,
     },
-    CreatedBy: {
-      type: DataTypes.INTEGER,
-    },
-    IsGeneral: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
   },
   {
     sequelize,
-    modelName: "Announcement",
-    tableName: "announcements",
+    modelName: "MeetingRoom",
+    tableName: "MeetingRooms",
     timestamps: false,
   }
 );
 
-export default Announcement;
+export default MeetingRoom;
