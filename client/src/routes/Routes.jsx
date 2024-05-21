@@ -6,10 +6,10 @@ import Login from "../pages/Login";
 import RoomSchedule from "../pages/RoomSchedule";
 import Profile from "../pages/Profile/Profile";
 import News from "../pages/News";
-import TextEditor from "../components/TextEditor/TextEditor";
 import NewsDetail from "../pages/News/NewDetail";
 import Notification from "../pages/Notification";
-import NoPermission from "../pages/NoPermission";
+import AccessDeny from "../pages/AccessDeny";
+import ManagerDashboard from "../pages/Manager/Dashboard";
 
 const WebRoutes = () => {
   return (
@@ -71,9 +71,12 @@ const WebRoutes = () => {
           </ProtectedRoute>
         }
       />
-      <Route path="/Test" element={<TextEditor />} />
+      <Route
+        path="/manager-dashboard/dashboard"
+        element={<ManagerDashboard />}
+      />
       <Route path="/*" element={<NotFound />} />
-      <Route path="/access-deny" element={<NoPermission />} />
+      <Route path="/access-deny" element={<AccessDeny />} />
     </Routes>
   );
 };

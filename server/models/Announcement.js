@@ -1,8 +1,6 @@
 import { DataTypes, Model } from "sequelize";
-import Employee from "./employee"; // Import the Employee model
-import connectDatabase from "../configs/DBConfig";
-
-const sequelize = connectDatabase();
+import Employee from "./Employee"; // Import the Employee model
+import { sequelize } from "../configs/DBConfig.js";
 
 class Announcement extends Model {}
 

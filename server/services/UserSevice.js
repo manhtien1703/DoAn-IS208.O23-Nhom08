@@ -1,4 +1,4 @@
-import User from "./models/User";
+import Employee from "../models/Employee.js";
 
 /**
  * Lấy thông tin người dùng bằng email
@@ -8,7 +8,7 @@ import User from "./models/User";
  */
 const getUser = async (email, req) => {
   try {
-    const user = await User.findOne({
+    const user = await Employee.findOne({
       where: {
         Email: email,
       },
@@ -48,7 +48,7 @@ const getUser = async (email, req) => {
  */
 const addUser = async (userData) => {
   try {
-    const newUser = await User.create(userData);
+    const newUser = await Employee.create(userData);
     return newUser;
   } catch (error) {
     console.error("Không thể thêm người dùng:", error);
@@ -62,7 +62,7 @@ const addUser = async (userData) => {
  */
 const getAllUsers = async () => {
   try {
-    const users = await User.findAll();
+    const users = await Employee.findAll();
     return users;
   } catch (error) {
     console.error("Không thể lấy danh sách người dùng:", error);
@@ -78,7 +78,7 @@ const getAllUsers = async () => {
  */
 const updateUser = async (userId, newData) => {
   try {
-    const user = await User.findByPk(userId);
+    const user = await Employee.findByPk(userId);
     if (!user) {
       throw new Error("Không tìm thấy người dùng để cập nhật.");
     }
@@ -97,7 +97,7 @@ const updateUser = async (userId, newData) => {
  */
 const deleteUser = async (userId) => {
   try {
-    const user = await User.findByPk(userId);
+    const user = await Employee.findByPk(userId);
     if (!user) {
       throw new Error("Không tìm thấy người dùng để xóa.");
     }

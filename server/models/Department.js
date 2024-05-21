@@ -1,8 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import Employee from "./Employee"; // Import the Employee model
-import connectDatabase from "../configs/DBConfig";
-
-const sequelize = connectDatabase();
+import { sequelize } from "../configs/DBConfig.js";
 
 class Department extends Model {}
 
@@ -31,10 +28,6 @@ Department.init(
     ManagerID: {
       type: DataTypes.INTEGER,
       allowNull: true,
-      references: {
-        model: Employee,
-        key: "EmployeeID",
-      },
     },
   },
   {

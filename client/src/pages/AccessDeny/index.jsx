@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const NoPermission = () => {
+const AccessDeny = () => {
   return (
     <div className="flex w-screen flex-col items-center justify-center  bg-white px-4 py-8">
       <img
@@ -8,7 +8,7 @@ const NoPermission = () => {
         alt="Error Illustration"
         className="mb-8 w-64"
       />
-      <h1 className="text-2xl font-semibold text-zinc-800 mb-2">
+      <h1 className="text-2xl font-semibold text-red-500 mb-2">
         Bạn không có quyền truy cập vào trang này
       </h1>
       <p className="text-zinc-600 mb-6 text-center">
@@ -23,4 +23,4 @@ const NoPermission = () => {
     </div>
   );
 };
-export default NoPermission;
+export default AccessDeny;

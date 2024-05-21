@@ -1,7 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import connectDatabase from "../configs/DBConfig";
-
-const sequelize = connectDatabase();
+import { sequelize } from "../configs/DBConfig.js";
 
 class MeetingRoom extends Model {}
 

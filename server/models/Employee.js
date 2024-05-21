@@ -1,8 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import Department from "./Department";
-import connectDatabase from "../configs/DBConfig";
-
-const sequelize = connectDatabase();
+import { sequelize } from "../configs/DBConfig.js";
 
 class Employee extends Model {}
 
@@ -12,6 +9,7 @@ Employee.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
     },
     FullName: {
       type: DataTypes.STRING,
@@ -28,10 +26,6 @@ Employee.init(
     DepartmentID: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: Department,
-        key: "DepartmentID",
-      },
     },
     Role: {
       type: DataTypes.ENUM("Nhan vien", "Truong phong", "Phong nhan su"),
@@ -53,6 +47,10 @@ Employee.init(
       onUpdate: DataTypes.NOW,
     },
     CCCD: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    Password: {
       type: DataTypes.TEXT,
       allowNull: false,
     },

@@ -59,8 +59,7 @@ export default function Profile() {
             {slugify(userRole) == slugify("truong phong") && (
               <li>
                 <Link
-                  to="/manager-dasbroad"
-                  onClick={handleLogout}
+                  to="/manager-dashboard/dashboard"
                   className=" w-full flex cursor-pointer p-2 pl-5 rounded gap-3 items-center"
                 >
                   Trang quản lý
@@ -70,8 +69,7 @@ export default function Profile() {
             {slugify(userRole) == slugify("phong nhan su") && (
               <li>
                 <Link
-                  to="/admin-dasbroad"
-                  onClick={handleLogout}
+                  to="/admin-dashboard/dashboard"
                   className=" w-full flex cursor-pointer p-2 pl-5 rounded gap-3 items-center"
                 >
                   Trang quản lý

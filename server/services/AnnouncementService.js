@@ -1,21 +1,35 @@
 import Announcement from "./models/Announcement";
 
 /**
- * Tạo một thông báo mới.
+ * Tạo một thông báo mới và gửi đến một danh sách người dùng.
  * @param {string} title - Tiêu đề của thông báo mới.
  * @param {string} content - Nội dung của thông báo mới.
+ * @param {Object[]} recipientIDs - Mảng chứa ID của người nhận thông báo.
  * @returns {Promise<object>} - Promise trả về thông báo được tạo.
  */
-async function createAnnouncement(title, content) {
+async function createAnnouncement(title, content, employees) {
   try {
+    // Tạo thông báo mới
     const announcement = await Announcement.create({
       Title: title,
       Content: content,
     });
-    console.log("New announcement created:", announcement.toJSON());
+
+    // Lặp qua mỗi ID người nhận và tạo một bản ghi AnnouncementRecipient cho mỗi người nhận
+    for (const employee of employees) {
+      await AnnouncementRecipient.create({
+        AnnouncementID: announcement.AnnouncementID,
+        RecipientID: employee.EmployeeID,
+      });
+    }
+
+    console.log(
+      "New announcement created and sent to users:",
+      announcement.toJSON()
+    );
     return announcement.toJSON();
   } catch (error) {
-    console.error("Error creating announcement:", error);
+    console.error("Error creating and sending announcement to users:", error);
     throw error;
   }
 }

@@ -3,7 +3,14 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import connectDatabase from "./configs/DBConfig.js";
+import { connectDatabase } from "./configs/DBConfig.js";
+import router from "./routes/routes.js";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Load biến môi trường từ file .env
 dotenv.config();
@@ -22,9 +29,10 @@ app.use(cors());
 connectDatabase();
 
 // Define routes
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+// Endpoint để phục vụ các tệp từ thư mục uploads
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use("/", router);
 
 // Set port và lắng nghe yêu cầu từ client
 const PORT = process.env.PORT || 5000;

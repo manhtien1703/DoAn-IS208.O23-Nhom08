@@ -33,7 +33,10 @@ function App() {
             className="z-10 border-2 border-orange-200  fixed bottom-3 right-4 text-white flex items-center"
             onClick={scrollToTop}
           >
-            <GoMoveToTop className="text-blue-600 z-12 " />
+            <GoMoveToTop
+              className="text-blue-600 z-12 
+            "
+            />
           </button>
         )}
         <WebRoutes />
