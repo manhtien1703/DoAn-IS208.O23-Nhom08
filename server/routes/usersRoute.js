@@ -1,18 +1,36 @@
 import express from "express";
-import { creatNewUser, getUserByEmail } from "../controller/userController.js";
+import {
+  countUsersAnnouncements,
+  createNewUser,
+  getAllUsers,
+  getUserByEmail,
+  getUsersAnnouncements,
+  getUsersByDepartmentID,
+  login,
+  updateAnnouncementStatus,
+} from "../controller/userController.js";
 import upload from "../configs/multerConfig.js";
 const usersRoute = express.Router();
 
 // Định nghĩa các tuyến đường cho /users
 
-// GET /users
-usersRoute.get("/", (req, res) => {
-  res.send("Trang danh sách người dùng");
-});
+usersRoute.get("/getall", getAllUsers);
 
-// GET /users/:email
-usersRoute.get("/:email", getUserByEmail);
+usersRoute.get("/email/:email", getUserByEmail);
 
-usersRoute.post("/add", upload.single("avatar"), creatNewUser);
+usersRoute.get("/department/:departmentid", getUsersByDepartmentID);
+
+usersRoute.post("/add", upload.single("avatar"), createNewUser);
+
+usersRoute.post("/login", login);
+
+usersRoute.get("/announcement", getUsersAnnouncements);
+
+usersRoute.put(
+  "/announcement/:announcementid/:userid",
+  updateAnnouncementStatus
+);
+
+usersRoute.get("/announcement/count", countUsersAnnouncements);
 
 export default usersRoute;

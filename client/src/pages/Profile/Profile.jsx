@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Header from "../../layouts/DefaultLayout/Header";
-import Footer from "../../layouts/DefaultLayout/Footer";
 
 import { IoIosLogOut } from "react-icons/io";
 import { useDispatch } from "react-redux";
@@ -9,6 +7,7 @@ import ProfileTab from "../../components/Profile/ProfileTab";
 import RequestLeaveTab from "../../components/Profile/RequestLeaveTab";
 import { Link } from "react-router-dom";
 import { slugify } from "../../utils";
+import DefaultLayout from "../../layouts/DefaultLayout";
 
 export default function Profile() {
   const [activeTab, setActiveTab] = useState(0);
@@ -33,8 +32,7 @@ export default function Profile() {
   };
 
   return (
-    <>
-      <Header />
+    <DefaultLayout>
       <div className="flex flex-col min-h-screen md:flex-row p-4 bg-white dark:bg-zinc-800">
         <div className="w-full max-h-56 lg:w-1/4 md:w-1/3 bg-zinc-100 dark:bg-zinc-700 p-4 rounded-lg shadow-md">
           <div className="mb-4">
@@ -91,7 +89,6 @@ export default function Profile() {
           {renderContent()}
         </div>
       </div>
-      <Footer />
-    </>
+    </DefaultLayout>
   );
 }

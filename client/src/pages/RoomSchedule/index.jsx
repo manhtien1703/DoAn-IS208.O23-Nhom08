@@ -1,14 +1,11 @@
 import RoomList from "../../components/RoomSchedule/RoomList";
-import Footer from "../../layouts/DefaultLayout/Footer";
-import Header from "../../layouts/DefaultLayout/Header";
+import DefaultLayout from "../../layouts/DefaultLayout";
 
 const RoomSchedule = () => {
   return (
-    <>
-      <Header />
+    <DefaultLayout>
       <RoomList />
-      <Footer />
-    </>
+    </DefaultLayout>
   );
 };
 

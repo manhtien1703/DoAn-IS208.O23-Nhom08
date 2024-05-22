@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import Employee from "./Employee"; // Import the Employee model
+import Employee from "./Employee.js"; // Import the Employee model
 import { sequelize } from "../configs/DBConfig.js";
 
 class Announcement extends Model {}

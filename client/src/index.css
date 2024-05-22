@@ -112,3 +112,10 @@ button:focus-visible {
 
     margin: auto;
 }
+
+/* News Card */
+.truncate-container p {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

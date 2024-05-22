@@ -1,4 +1,4 @@
-import News from "./models/News";
+import News from "../models/News.js";
 
 /**
  * Tạo một tin tức mới.
@@ -6,7 +6,7 @@ import News from "./models/News";
  * @param {string} content - Nội dung của tin tức mới.
  * @returns {Promise<void>}
  */
-async function createNews(title, content) {
+async function createNewsService(title, content) {
   try {
     const news = await News.create({
       Title: title,
@@ -19,14 +19,23 @@ async function createNews(title, content) {
 }
 
 /**
- * Đọc tất cả các tin tức.
+ * Lấy tin tức theo id.
  * @returns {Promise<object>} - Promise trả về một mảng các tin tức.
  */
-async function getNews(id) {
+async function getNewsService(id) {
   try {
     const news = await News.findByPk(id);
-    console.log("news:", news.toJSON());
-    return news.toJSON();
+    if (news) {
+      // Convert CreatedAt and UpdatedAt to ISO strings
+      news.CreatedAt = news.CreatedAt.toISOString();
+      news.UpdatedAt = news.UpdatedAt.toISOString();
+
+      console.log("news:", news.toJSON());
+      return news.toJSON();
+    } else {
+      console.log("News not found");
+      return null;
+    }
   } catch (error) {
     console.error("Error fetching news:", error);
     throw error;
@@ -37,7 +46,7 @@ async function getNews(id) {
  * Đọc tất cả các tin tức.
  * @returns {Promise<object[]>} - Promise trả về một mảng các tin tức.
  */
-async function getAllNews() {
+async function getAllNewsService() {
   try {
     const allNews = await News.findAll();
     console.log(
@@ -58,7 +67,7 @@ async function getAllNews() {
  * @param {string} content - Nội dung mới của tin tức.
  * @returns {Promise<void>}
  */
-async function updateNews(id, title, content) {
+async function updateNewsService(id, title, content) {
   try {
     const news = await News.findByPk(id);
     if (news) {
@@ -79,7 +88,7 @@ async function updateNews(id, title, content) {
  * @param {number} id - ID của tin tức cần xóa.
  * @returns {Promise<void>}
  */
-async function deleteNews(id) {
+async function deleteNewsService(id) {
   try {
     const news = await News.findByPk(id);
     if (news) {
@@ -93,4 +102,10 @@ async function deleteNews(id) {
   }
 }
 
-export { createNews, getNews, getAllNews, updateNews, deleteNews };
+export {
+  createNewsService,
+  getNewsService,
+  updateNewsService,
+  deleteNewsService,
+  getAllNewsService,
+};

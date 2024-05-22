@@ -1,17 +1,38 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import Header from "../../../layouts/DefaultLayout/Header";
 import Footer from "../../../layouts/DefaultLayout/Footer";
-
-const htmlString = `<p>Sự đẳng cấp đến từ ngoại hình của chiếc <a href="https://www.thegioididong.com/laptop-apple-macbook-air">MacBook Air</a> nhà Apple là điều không thể phủ nhận và khó có dòng sản phẩm cùng phân khúc nào có thể qua mặt được. Vẫn là lớp <strong>vỏ kim loại nguyên</strong> khối cứng cáp cùng các cạnh góc vuông vức, sang trọng nhưng chiếc MacBook Air 2022 năm nay đã thoát ra khỏi ngôn ngữ thiết kế nhẹ nhàng vốn có từ lâu và khoác lên diện mạo mới tương tự như “đàn anh” MacBook Pro.</p><p><a href="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112213.jpg"><img src="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112213.jpg" alt="MacBook Air M2 - Thiết kế thời thượng"></a></p><p>Bề dày&nbsp;<strong>11.3 mm</strong>&nbsp;cùng cân nặng ấn tượng&nbsp;<strong>1.24 kg</strong>&nbsp;sẽ là một điểm cộng hoàn hảo cho khả năng di động, luôn sẵn sàng đồng hành cùng một người dùng là sinh viên, dân văn phòng như mình đến trường học, công ty hay cũng thoải mái cho người dùng sáng tạo và đặc biệt là những chuyến công tác xa của doanh nhân.</p><p><a href="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112217.jpg"><img src="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112217.jpg" alt="MacBook Air M2 - Thiết kế sang trọng"></a></p><p>Mặc dù có ngoại hình mỏng và khối lượng nhẹ hơn song MacBook Air mới vẫn không kém phần chắc chắn, độ hoàn thiện tốt so với trước đây. Khung máy cứng, nắp máy gần như không uốn cong khi mình tác động lực và vẫn có thể mở lên bằng một ngón tay. Apple luôn đứng đầu khi nói đến chất lượng sản xuất và chiếc Air mới cũng không ngoại lệ.</p><p>Cá nhân mình rất thích màu&nbsp;Midnight với lớp hoàn thiện màu xanh đen đậm có thể thay đổi tùy theo ánh sáng nhưng lại có điểm trừ khi dễ bám dấu vân tay, làm mất đi ngoại hình sang chảnh vốn có của một chiếc&nbsp;<a href="https://www.thegioididong.com/laptop?g=cao-cap-sang-trong">laptop cao cấp - sang trọng</a>, bạn có thể chọn mua màu xám, bạc hoặc vàng sẽ không dễ bị bám dấu vân tay hoặc chịu&nbsp;khó lau chùi thường xuyên để giữ cho máy luôn sáng bóng.</p><p><a href="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112207.jpg"><img src="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112207.jpg" alt="MacBook Air M2 - Midnight"></a></p><p>Một sự thay đổi rõ rệt trên chiếc bàn phím&nbsp;<strong>Magic Key</strong>&nbsp;của dòng&nbsp;<a href="https://www.thegioididong.com/laptop-apple-macbook">laptop Apple</a>&nbsp;M2 năm nay chính là kích thước của hàng phím chức năng F được gia tăng bằng với các dòng phím khác, cho mình thao tác sử dụng chuẩn xác, không bị nhầm lẫn. Hơn nữa trải nghiệm gõ phím cũng rất nhẹ nhàng, êm tay, tiếng ấn cũng nhẹ nhàng hơn so với bàn phím cánh bướm cũ. Kết hợp cùng&nbsp;<a href="https://www.thegioididong.com/laptop-den-ban-phim">đèn nền</a>&nbsp;hỗ trợ mình làm việc dễ dàng hơn trong nhiều điều kiện ánh sáng tối khác nhau.&nbsp;</p><p><a href="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112231.jpg"><img src="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112231.jpg" alt="MacBook Air M2 - Bàn phím"></a></p><p>Tính năng <strong>Touch ID</strong>&nbsp;(cảm biến vân tay)&nbsp;tích hợp nút nguồn thay cho mật khẩu cho phép mình mở khóa máy, truy cập các ứng dụng và thanh toán ứng dụng một cách nhanh chóng, không cần tốn nhiều thời gian hay phải nhớ mật khẩu như các kiểu bảo mật truyền thống.</p><p><a href="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112234.jpg"><img src="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112234.jpg" alt="MacBook Air M2 - Touch ID"></a></p><p>Bàn di chuột không có khác nhiều so với các mẫu cũ mặc dù Apple đã làm rộng hơn một chút, hoạt động giống nhau về mặt chức năng với khả năng di vuốt tuyệt vời, hỗ trợ cử chỉ và từ chối lệnh khi mình lỡ đặt lòng bàn tay lên.&nbsp;Một trong những thay đổi thú vị khác trên chiếc Air mới chính là lưới loa đã được giấu đi, nằm ở bản lề giữa bàn phím và màn hình để giữ cho ngoại hình gọn gàng hơn.</p><p><a href="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112209.jpg"><img src="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112209.jpg" alt="MacBook Air M2 - TouchPad"></a></p><p>MacBook Air M2 2022 sở hữu <strong>đầu sạc MagSafe</strong> tương tự như MacBook Pro 14 và 16, cho phép mình sạc mà không lo vấp phải dây cáp khiến máy tính rơi xuống sàn.&nbsp;Nhờ có cổng MagSafe mà mình thực sự có thêm một cổng USB-C so với các kiểu máy cũ. Thay vì phải sử dụng một cổng để sạc máy tính và cổng còn lại cho thiết bị ngoại vi, giờ đây mình có thể sử dụng cả hai cổng hỗ trợ Thunderbolt cho các phụ kiện.</p><p><a href="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112245.jpg"><img src="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112245.jpg" alt="MacBook Air M2 - Cổng MagSafe"></a></p><h3>Phá vỡ mọi giới hạn nhờ sức mạnh từ bộ vi xử lý Apple M2</h3><p>Bộ vi xử lý<a href="https://www.thegioididong.com/tin-tuc/chip-apple-m2-chinh-thuc-ra-mat-voi-suc-manh-khung-1437839">&nbsp;Apple M2</a>&nbsp;tuy có mặt cấu tạo tương đồng với M1 nhưng hiệu suất hoạt động cao hơn&nbsp;<strong>18%</strong>&nbsp;và nhanh hơn&nbsp;<strong>1.9 lần</strong>&nbsp;so với các dòng <a href="https://www.thegioididong.com/laptop">laptop</a> sở hữu bộ vi xử lý 10 lõi khác, dư sức cân mọi tác vụ từ học tập, làm việc đến đồ họa đến kỹ thuật chuyên sâu. Đồ họa&nbsp;<strong>GPU 8 nhân</strong>&nbsp;cho khả năng hoạt động mạnh mẽ hơn&nbsp;<strong>35%</strong>, xử lý lên đến&nbsp;<strong>15.8 nghìn tỷ</strong>&nbsp;tác vụ trong&nbsp;<strong>1 giây</strong>&nbsp;nên các công việc liên quan đến hình ảnh, đồ họa, video,... đều được giải quyết rất mượt mà.</p><p><a href="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112236.jpg"><img src="https://cdn.tgdd.vn/Products/Images/44/282827/apple-macbook-air-m2-2022-161122-112236.jpg" alt="MacBook Air M2 - Hiệu năng"></a></p>`;
+import { useEffect, useState } from "react";
+import { getIdFromSlug } from "../../../utils";
+import axios from "axios";
+import { serverURL } from "../../../utils/server";
 
 export default function NewsDetail() {
   const { slug } = useParams();
+  const navigator = useNavigate();
+  const [contentHtml, setContentHtml] = useState("");
+  useEffect(() => {
+    const getNewsDetails = async () => {
+      try {
+        const id = getIdFromSlug(slug);
+        const result = await axios.get(`${serverURL}/news/${id}`);
+        if (result.data.status === "error") {
+          navigator("/notfound");
+        } else {
+          console.log(result.data.news);
+          setContentHtml(result.data.news.Content);
+        }
+      } catch (error) {
+        // navigator("/notfound");
+      }
+    };
+    getNewsDetails();
+  }, []);
   return (
     <>
       <Header />
       <div
-        className="content-container py-10 px-20"
-        dangerouslySetInnerHTML={{ __html: htmlString }}
+        className="content-container py-10 px-20 min-h-screen"
+        dangerouslySetInnerHTML={{ __html: contentHtml }}
       ></div>
       <Footer />
     </>

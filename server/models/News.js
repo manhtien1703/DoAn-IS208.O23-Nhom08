@@ -2,8 +2,6 @@ import { DataTypes, Model } from "sequelize";
 import Employee from "./Employee.js"; // Import Employee model
 import { sequelize } from "../configs/DBConfig.js";
 
-const sequelize = connectDatabase();
-
 class News extends Model {}
 
 News.init(
@@ -17,7 +15,7 @@ News.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    Thubm: {
+    Thumb: {
       type: DataTypes.STRING,
       allowNull: false,
     },

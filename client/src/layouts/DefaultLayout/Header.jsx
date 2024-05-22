@@ -5,6 +5,8 @@ import { FaBell } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { slugify } from "../../utils";
+import axios from "axios";
+import { serverURL } from "../../utils/server";
 
 const navList = [
   {
@@ -21,14 +23,10 @@ const navList = [
   },
 ];
 
-const sampleNotifications = Array.from({ length: 5 }, (_, i) => ({
-  id: i + 1,
-  message: `Thông báo ${i + 1}`,
-}));
-
 const Header = () => {
   const user = useSelector(selectUser);
-  const [newNotificationCount, setNewNotificationCount] = useState(1);
+  const [newNotificationCount, setNewNotificationCount] = useState(0);
+  const [notifications, setNotifications] = useState([]);
   const [isNotifyPopupOpen, setIsNotifyPopupOpen] = useState(false);
   const popupRef = useRef(null);
 
@@ -54,15 +52,33 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    const getNotification = async () => {
+      try {
+        console.log(user.EmployeeID);
+        const result = await axios.get(
+          `${serverURL}/users/announcement?id=${user.EmployeeID}&limit=5`
+        );
+        setNewNotificationCount(parseInt(result.data.unseenCount));
+        console.log(result.data.announcements);
+        setNotifications([...result.data.announcements]);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getNotification();
+  }, []);
+
   return (
     <header className=" top-0 w-full drop-shadow-lg  px-3 py-1 bg-orange-50">
       <nav className="relative flex justify-between">
-        <div className=" w-[50px] md:w-[100px] flex items-center">
+        <div className=" w-[100px] md:w-[150px] flex items-center">
           <img src="/images/logo.png" alt="LOGO" />
         </div>
-        <div className="flex items-center gap-3 ">
-          <div className="navLinks rounded-md  bg-white  duration-500 absolute md:bg-transparent md:static md:w-auto w-full h-auto  flex md:items-center gap-[1.5vw] top-[120%] left-[-100%] -translate-x-5 px-5 md:py-0 py-5">
-            <ul className="flex  md:flex-row flex-col md:items-center md:gap-[2vw] gap-8">
+        <div className="flex items-center justify-center gap-3 ">
+          <div className="navLinks rounded-md  bg-white  duration-500 absolute md:bg-transparent md:static md:w-auto w-full h-auto  flex md:items-center gap-[1.5vw] top-[120%] left-[-100%] -translate-x-5 md:translate-x-0 px-5 md:py-0 py-5">
+            <ul className="flex  md:flex-row md:justify-between flex-col md:items-center md:gap-[2vw] gap-8">
               {navList.map((navListItem) => (
                 <li
                   key={navListItem.url}
@@ -87,22 +103,32 @@ const Header = () => {
             {isNotifyPopupOpen && (
               <div
                 ref={popupRef}
-                className="absolute w-80 md:w-96 right-20 translate-x-1/2 top-14 mt-2 bg-white border border-gray-300 rounded shadow-lg"
+                className="absolute w-80 md:w-96 -right-4 translate-x-1/2 top-14 mt-2 bg-white border border-gray-300 rounded shadow-lg"
               >
                 <div className="p-4">
                   <h4 className="text-xl font-bold mb-2 text-center">
                     Thông báo
                   </h4>
-                  {sampleNotifications.length > 0 ? (
+                  {notifications?.length > 0 ? (
                     <ul>
-                      {sampleNotifications.map((notification) => (
+                      {notifications.map((notification) => (
                         <li
-                          key={notification.id}
+                          key={notification.AnnouncementID}
                           className="py-5 border-b border-gray-200"
                         >
-                          <Link to={slugify(notification.message)}>
-                            <p className="pl-3 truncate">
-                              {notification.message}
+                          <Link
+                            to={`/notifications/${slugify(
+                              notification.AnnouncementID
+                            )}`}
+                          >
+                            <p
+                              className={`pl-3 truncate ${
+                                notification.Status?.toLowerCase() === "seen"
+                                  ? "text-gray-800"
+                                  : "text-blue-500"
+                              }`}
+                            >
+                              {notification.Announcement.Content}
                             </p>
                           </Link>
                         </li>
@@ -127,11 +153,11 @@ const Header = () => {
               to="/profile"
               className=" text-xl  font-semibold flex items-center gap-4 text-gray-800"
             >
-              <span className=" text-xl  font-semibold">{user?.name}</span>
+              <span className=" text-xl  font-semibold">{user?.FullName}</span>
               <img
-                src="https://as2.ftcdn.net/v2/jpg/03/49/49/79/1000_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg"
-                alt={`Người dùng ${user?.name}`}
-                className="h-11 rounded-full"
+                src={user.Avatar}
+                alt={`Người dùng ${user?.FullName}`}
+                className="h-14 w-14 rounded-full"
               />
             </Link>
           </div>

@@ -10,6 +10,7 @@ import NewsDetail from "../pages/News/NewDetail";
 import Notification from "../pages/Notification";
 import AccessDeny from "../pages/AccessDeny";
 import ManagerDashboard from "../pages/Manager/Dashboard";
+import NotificationDetails from "../pages/Notification/NotificationDetails";
 
 const WebRoutes = () => {
   return (
@@ -51,7 +52,7 @@ const WebRoutes = () => {
         path="/notifications/:slug"
         element={
           <ProtectedRoute>
-            <NewsDetail />
+            <NotificationDetails />
           </ProtectedRoute>
         }
       />

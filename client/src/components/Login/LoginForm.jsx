@@ -4,6 +4,8 @@ import { getInfo, selectUser } from "../../redux/slices/authSlice";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { serverURL } from "../../utils/server";
 
 const LoginForm = ({ dispatch }) => {
   const navigate = useNavigate();
@@ -25,20 +27,21 @@ const LoginForm = ({ dispatch }) => {
   };
 
   // Xử lý khi người dùng nhấn nút đăng nhập
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Gửi dữ liệu đăng nhập (formData.email, formData.password) đến server hoặc xử lý theo ý của bạn
-    Notify("success", "Đăng nhập thành công");
-    // Sau khi xử lý, bạn có thể xóa dữ liệu trong state để làm sạch form
-    const user = {
-      name: "aaa",
+    const result = await axios.post(`${serverURL}/users/login`, {
       email: formData.email,
-      role: "employee",
-    };
+      password: formData.password,
+    });
 
-    dispatch(getInfo(formData.email));
-
-    navigate("/");
+    if (result.data.status === "success") {
+      Notify("success", "Đăng nhập thành công");
+      navigate("/");
+      dispatch(getInfo(result.data.user));
+    } else {
+      console.log(result.message);
+      Notify("error", result.data.message);
+    }
   };
 
   return (

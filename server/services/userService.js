@@ -6,7 +6,7 @@ import Employee from "../models/Employee.js";
  * @param {Object} req - Request object từ Express
  * @returns {Promise<Object>} - Trả về thông tin người dùng cùng với avatar
  */
-const getUser = async (email, req) => {
+const getUserService = async (email, req) => {
   try {
     const user = await Employee.findOne({
       where: {
@@ -15,7 +15,7 @@ const getUser = async (email, req) => {
     });
 
     if (!user) {
-      throw new Error("Không tìm thấy người dùng với email này.");
+      return {};
     }
 
     const host = req.get("host");
@@ -34,7 +34,43 @@ const getUser = async (email, req) => {
       CreatedAt: user.CreatedAt,
       UpdatedAt: user.UpdatedAt,
       CCCD: user.CCCD,
+      Password: user.Password,
     };
+  } catch (error) {
+    console.error("Không thể lấy thông tin người dùng:", error);
+    return {};
+  }
+};
+
+/**
+ * Lấy thông tin người dùng bằng email
+ * @param {string} email - Email của người dùng
+ * @param {Object} req - Request object từ Express
+ * @returns {Promise<Array<Object>>} - Trả về danh sách thông tin người dùng cùng với avatar
+ */
+const getUsersByDepartmentIDService = async (departmentID, req) => {
+  try {
+    const users = await Employee.findAll({
+      where: { DepartmentID: parseInt(departmentID) },
+    });
+
+    const host = req.get("host");
+    const protocol = req.protocol;
+
+    return users.map((user) => ({
+      EmployeeID: user.EmployeeID,
+      FullName: user.FullName,
+      Email: user.Email,
+      PhoneNumber: user.PhoneNumber,
+      DepartmentID: user.DepartmentID,
+      Role: user.Role,
+      Avatar: user.Avatar
+        ? `${protocol}://${host}/uploads/${user.Avatar}`
+        : null, // Đường dẫn đầy đủ tới tệp avatar
+      CreatedAt: user.CreatedAt,
+      UpdatedAt: user.UpdatedAt,
+      CCCD: user.CCCD,
+    }));
   } catch (error) {
     console.error("Không thể lấy thông tin người dùng:", error);
     throw error;
@@ -46,7 +82,7 @@ const getUser = async (email, req) => {
  * @param {Object} userData - Thông tin của người dùng mới
  * @returns {Promise<Object>} - Trả về thông tin người dùng mới được thêm vào
  */
-const addUser = async (userData) => {
+const addUserService = async (userData) => {
   try {
     const newUser = await Employee.create(userData);
     return newUser;
@@ -60,7 +96,7 @@ const addUser = async (userData) => {
  * Lấy tất cả người dùng
  * @returns {Promise<Array>} - Trả về danh sách tất cả người dùng
  */
-const getAllUsers = async () => {
+const getAllUsersService = async () => {
   try {
     const users = await Employee.findAll();
     return users;
@@ -76,7 +112,7 @@ const getAllUsers = async () => {
  * @param {Object} newData - Dữ liệu mới cần cập nhật
  * @returns {Promise<Object>} - Trả về thông tin người dùng sau khi cập nhật
  */
-const updateUser = async (userId, newData) => {
+const updateUserService = async (userId, newData) => {
   try {
     const user = await Employee.findByPk(userId);
     if (!user) {
@@ -95,7 +131,7 @@ const updateUser = async (userId, newData) => {
  * @param {number} userId - ID của người dùng cần xóa
  * @returns {Promise<void>}
  */
-const deleteUser = async (userId) => {
+const deleteUserService = async (userId) => {
   try {
     const user = await Employee.findByPk(userId);
     if (!user) {
@@ -108,4 +144,11 @@ const deleteUser = async (userId) => {
   }
 };
 
-export { getUser, addUser, getAllUsers, updateUser, deleteUser };
+export {
+  getUserService,
+  getUsersByDepartmentIDService,
+  addUserService,
+  getAllUsersService,
+  updateUserService,
+  deleteUserService,
+};

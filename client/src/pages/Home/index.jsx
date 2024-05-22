@@ -2,6 +2,11 @@ import { Link } from "react-router-dom";
 import NewsCard from "../../components/News/NewsCard/NewsCard";
 import Footer from "../../layouts/DefaultLayout/Footer";
 import Header from "../../layouts/DefaultLayout/Header";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { serverURL } from "../../utils/server";
+import Notify from "../../components/Toast/Notify";
+import DefaultLayout from "../../layouts/DefaultLayout";
 
 const notifications = [
   {
@@ -49,41 +54,26 @@ const notifications = [
     time: "02/05/2024 - 11:35",
   },
 ];
-const newsData = [
-  {
-    id: 2,
-    title: "Title 2",
-    thumb: "thumb2.jpg",
-    createdOn: "2024-05-18",
-    content: "Content 2",
-  },
-  {
-    id: 1,
-    title: "Title 1",
-    thumb: "thumb1.jpg",
-    createdOn: "2024-05-19",
-    content: "Content 1",
-  },
-  {
-    id: 2,
-    title: "Title 2",
-    thumb: "thumb2.jpg",
-    createdOn: "2024-05-18",
-    content: "Content 2",
-  },
-  {
-    id: 1,
-    title: "Title 1",
-    thumb: "thumb1.jpg",
-    createdOn: "2024-05-19",
-    content: "Content 1",
-  },
-];
 
 const Home = () => {
+  const [newsData, setNewsData] = useState([]);
+
+  useEffect(() => {
+    const getNews = async () => {
+      try {
+        const result = await axios.get(`${serverURL}/news`);
+        const limitedNews = result.data.newsList.slice(0, 8);
+        setNewsData(limitedNews);
+      } catch (error) {
+        Notify("error", error.message);
+      }
+    };
+
+    getNews();
+  }, []);
+
   return (
-    <>
-      <Header />
+    <DefaultLayout>
       <div className="min-h-screen md:px-10 bg-zinc-100 dark:bg-zinc-800">
         <div className="gap-4 p-4">
           <div className="bg-white dark:bg-zinc-700 shadow rounded-lg p-4 mb-4">
@@ -113,9 +103,13 @@ const Home = () => {
             <h2 className="font-bold text-xl mb-2">Tin nổi bật</h2>
             <h1 className="text-3xl font-bold text-center my-8">Latest News</h1>
             <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {newsData.map((news, index) => (
-                <NewsCard key={index} news={news} />
-              ))}
+              {newsData.length === 0 ? (
+                <p>Không có tin tức mới</p>
+              ) : (
+                newsData.map((news, index) => (
+                  <NewsCard key={index} news={news} />
+                ))
+              )}
             </div>
             <div className="mb-1 mt-4 text-lg flex justify-end">
               <Link to="/news" className="text-blue-500 hover:text-blue-600">
@@ -125,8 +119,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <Footer />
-    </>
+    </DefaultLayout>
   );
 };
 

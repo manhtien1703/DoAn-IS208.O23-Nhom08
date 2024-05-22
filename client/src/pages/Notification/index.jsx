@@ -1,17 +1,18 @@
-import Header from "../../layouts/DefaultLayout/Header";
-import Footer from "../../layouts/DefaultLayout/Footer";
-import { useState } from "react";
-
-const notifications = [
-  { id: 1, content: "Thông báo 1", seen: "đã xem" },
-  { id: 2, content: "Thông báo 2", seen: "Chưa xem" },
-  { id: 3, content: "Thông báo 3", seen: "Chua xem" },
-];
+import { useEffect, useState } from "react";
+import DefaultLayout from "../../layouts/DefaultLayout";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { selectUser } from "../../redux/slices/authSlice";
+import { serverURL } from "../../utils/server";
+import { Link } from "react-router-dom";
+import { convertDateToString, slugify } from "../../utils";
 
 export default function Notification() {
-  const [searchName, setSearchName] = useState("");
+  const user = useSelector(selectUser);
   const [searchDate, setSearchDate] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [notifications, setNotifications] = useState([]);
+  const [filteredNotifications, setFilteredNotifications] = useState([]);
 
   // Hàm xử lý sự kiện thay đổi ngày tìm kiếm
   const handleDateChange = (event) => {
@@ -23,16 +24,50 @@ export default function Notification() {
     setStatusFilter(event.target.value);
   };
 
-  const filterNotifications = () => {};
+  const handleSearch = () => {
+    const filteredByDate = notifications.filter((notification) => {
+      if (!searchDate) {
+        return true;
+      }
+      return (
+        convertDateToString(new Date(notification.CreatedAt)) ===
+        convertDateToString(new Date(searchDate))
+      );
+    });
 
-  const filteredNotifications = notifications.filter(filterNotifications);
+    const filteredByStatus = filteredByDate.filter((notification) => {
+      if (statusFilter === "all") {
+        return true;
+      }
+      return slugify(notification.Status) === slugify(statusFilter);
+    });
+    setFilteredNotifications([...filteredByStatus]);
+  };
+
+  useEffect(() => {
+    const getNotifications = async () => {
+      try {
+        const result = await axios.get(
+          `${serverURL}/users/announcement?id=${user.EmployeeID}`
+        );
+        setNotifications([...result.data.announcements]);
+        setFilteredNotifications([...result.data.announcements]);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getNotifications();
+  }, []);
+
+  useEffect(() => {
+    handleSearch();
+  }, [searchDate, statusFilter]);
 
   return (
-    <>
-      <Header />
+    <DefaultLayout>
       <div className="min-h-screen bg-zinc-100 dark:bg-zinc-800">
-        <div className="grid grid-cols-4 gap-4 p-4">
-          <div className="col-span-4 md:col-span-1 bg-white dark:bg-zinc-700 shadow rounded-lg p-4">
+        <div className="flex flex-col md:grid-cols-5  lg:grid lg:grid-cols-4 gap-4 p-4">
+          <div className="col-span-4 md:col-span-2 lg:md:col-span-1 bg-white dark:bg-zinc-700 shadow rounded-lg p-4">
             <div className="mb-4">
               <h2 className="font-bold text-xl mb-2">Bộ lọc</h2>
               <div className="items-center p-2 rounded overflow-hidden">
@@ -42,15 +77,21 @@ export default function Notification() {
                 <input
                   type="date"
                   id="search-day"
+                  // value={searchDate}
+                  onChange={handleDateChange}
                   className="py-2 px-1 w-full mt-2 border-2 bg-transparent"
-                  placeholder="Search this site..."
                 />
               </div>
               <div className="items-center p-2 rounded overflow-hidden">
                 <label htmlFor="selectOption" className="my-3 mr-3 font-bold">
                   Trạng thái
                 </label>
-                <select id="selectOption" className="p-2 mt-3 border-2 w-full">
+                <select
+                  id="selectOption"
+                  value={statusFilter}
+                  onChange={handleStatusChange}
+                  className="p-2 mt-3 border-2 w-full"
+                >
                   <option value="all">tất cả</option>
                   <option value="seen">đã xem</option>
                   <option value="not seen">chưa xem</option>
@@ -63,18 +104,22 @@ export default function Notification() {
             <div className="rounded-lg py-4 px-10 mb-4">
               <h2 className="font-bold text-2xl mb-5">THÔNG BÁO</h2>
               <ul>
-                <li className="mb-1">
-                  <a href="#" className="text-blue-500 hover:text-blue-600">
-                    Thông báo Danh sách sinh viên dự kiến TN đợt 2 năm 2024 -
-                    14/05/2024 - 14:26
-                  </a>
-                </li>
+                {filteredNotifications.map((notification, index) => (
+                  <li key={index} className="mb-5">
+                    <div className="flex justify-between">
+                      <Link>{notification.Announcement.Title}</Link>
+                      <span>
+                        {convertDateToString(new Date(notification.CreatedAt))}
+                      </span>
+                    </div>
+                    <div></div>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
         </div>
       </div>
-      <Footer />
-    </>
+    </DefaultLayout>
   );
 }

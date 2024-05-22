@@ -8,6 +8,7 @@ import router from "./routes/routes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
+import rateLimit from "express-rate-limit";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,6 +18,12 @@ dotenv.config();
 
 // Khởi tạo express app
 const app = express();
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 phút
+  max: 100, // Giới hạn mỗi IP chỉ thực hiện 100 yêu cầu trong mỗi cửa sổ 15 phút
+  message: "Quá nhiều yêu cầu từ IP này, vui lòng thử lại sau 15 phút.",
+});
 
 // Sử dụng body-parser middleware
 app.use(bodyParser.json());
