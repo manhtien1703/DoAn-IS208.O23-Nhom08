@@ -3,8 +3,6 @@ import MeetingRoom from "./MeetingRoom.js"; // Import the MeetingRoom model
 import Employee from "./Employee.js"; // Import the Employee model
 import { sequelize } from "../configs/DBConfig.js";
 
-const sequelize = connectDatabase();
-
 class MeetingSchedule extends Model {}
 
 MeetingSchedule.init(

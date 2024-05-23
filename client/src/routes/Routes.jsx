@@ -6,7 +6,7 @@ import Login from "../pages/Login";
 import RoomSchedule from "../pages/RoomSchedule";
 import Profile from "../pages/Profile/Profile";
 import News from "../pages/News";
-import NewsDetail from "../pages/News/NewDetail";
+import NewsDetail from "../pages/News/NewsDetail";
 import Notification from "../pages/Notification";
 import AccessDeny from "../pages/AccessDeny";
 import ManagerDashboard from "../pages/Manager/Dashboard";

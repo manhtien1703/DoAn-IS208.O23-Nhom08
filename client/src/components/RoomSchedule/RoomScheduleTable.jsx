@@ -1,54 +1,78 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
+import { convertDateToString } from "../../utils";
+import { serverURL } from "../../utils/server";
+import axios from "axios";
+import Notify from "../Toast/Notify";
 
 const RoomScheduleTable = ({ room, date }) => {
   // Giả sử chúng ta có dữ liệu lịch trình của tòa nhà
-  const [scheduleData, setScheduleData] = useState({
-    "Phòng 101": {
-      "2024-05-18": [
-        { time: "08:00 - 09:00", reason: "Cuộc họp công ty" },
-        { time: "10:00 - 11:00", reason: "Đào tạo nhân viên" },
-      ],
-      "2024-05-19": [
-        { time: "09:00 - 10:00", reason: "Họp phòng kỹ thuật" },
-        { time: "13:00 - 14:00", reason: "Thảo luận dự án" },
-      ],
-    },
-    "Phòng 102": {
-      "2024-05-18": [
-        { time: "09:00 - 10:00", reason: "Họp marketing" },
-        { time: "11:00 - 12:00", reason: "Họp ban giám đốc" },
-      ],
-      "2024-05-19": [
-        { time: "10:00 - 11:00", reason: "Đào tạo kỹ thuật" },
-        { time: "14:00 - 15:00", reason: "Họp khách hàng" },
-      ],
-    },
-    // Thêm dữ liệu cho các phòng khác nếu cần
-  });
+  const [scheduleData, setScheduleData] = useState([]);
 
   const schedule = scheduleData[room]?.[date] || [];
 
+  useEffect(() => {
+    const loadScheduleData = async () => {
+      try {
+        const result = await axios.get(
+          `${serverURL}/meeting-room/${room.RoomID}/${date}`
+        );
+        if (result.data.status === "success") {
+          console.log(result.data.meetingrooms);
+          setScheduleData([...result.data.meetingrooms]);
+        }
+      } catch (e) {
+        Notify("error", "Có lỗi khi lấy lịch trình của phòng");
+        console.error(e.message);
+      }
+    };
+    loadScheduleData();
+  }, [room]);
+
   return (
     <div className="p-4 bg-white shadow rounded">
-      <h2 className="text-xl font-bold mb-2">{`Lịch trình của ${room} vào ngày ${date}`}</h2>
-      {schedule.length > 0 ? (
+      <h2 className="text-xl font-bold mb-2">{`Lịch trình của ${
+        room.RoomName
+      } vào ngày ${convertDateToString(new Date(date))}`}</h2>
+      {scheduleData.length > 0 ? (
         <table className="w-full table-auto border-collapse mb-4">
           <thead>
             <tr>
               <th className="border px-4 py-2">Thời gian</th>
-              <th className="border px-4 py-2">Lý do sử dụng</th>
+              <th className="border px-4 py-2 w-2/4">Lý do sử dụng</th>
             </tr>
           </thead>
           <tbody>
-            {schedule.map((entry, index) => (
-              <tr key={index}>
-                <td className="border px-4 py-2">{entry.time}</td>
-                <td className="border px-4 py-2">{entry.reason}</td>
-              </tr>
-            ))}
+            {scheduleData.map((entry, index) => {
+              const startTime = new Date(entry.StartTime);
+              const startTimeString =
+                startTime.getHours().toString().padStart(2, "0") +
+                ":" +
+                startTime.getMinutes().toString().padStart(2, "0") +
+                " - " +
+                convertDateToString(startTime);
+
+              const endTime = new Date(entry.EndTime);
+              const endTimeString =
+                endTime.getHours().toString().padStart(2, "0") +
+                ":" +
+                endTime.getMinutes().toString().padStart(2, "0") +
+                " - " +
+                convertDateToString(endTime);
+
+              return (
+                <tr key={index}>
+                  <td className="border px-4 py-2">
+                    Từ {startTimeString} đến {endTimeString}
+                  </td>
+                  <td className="border px-4 py-2 w-2/4">
+                    {entry.Description}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       ) : (
@@ -59,8 +83,8 @@ const RoomScheduleTable = ({ room, date }) => {
 };
 
 RoomScheduleTable.propTypes = {
-  room: PropTypes.func.isRequired,
-  date: PropTypes.func.isRequired,
+  room: PropTypes.object.isRequired,
+  date: PropTypes.string.isRequired,
 };
 
 export default RoomScheduleTable;

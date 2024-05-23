@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getIdFromSlug } from "../../../utils";
 import axios from "axios";
 import { serverURL } from "../../../utils/server";
+import DefaultLayout from "../../../layouts/DefaultLayout";
 
 export default function NewsDetail() {
   const { slug } = useParams();
@@ -28,13 +29,11 @@ export default function NewsDetail() {
     getNewsDetails();
   }, []);
   return (
-    <>
-      <Header />
+    <DefaultLayout>
       <div
         className="content-container py-10 px-20 min-h-screen"
         dangerouslySetInnerHTML={{ __html: contentHtml }}
       ></div>
-      <Footer />
-    </>
+    </DefaultLayout>
   );
 }
