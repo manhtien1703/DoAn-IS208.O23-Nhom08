@@ -3,6 +3,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
+import cron from "node-cron";
 import { connectDatabase } from "./configs/DBConfig.js";
 import router from "./routes/routes.js";
 import path from "path";
@@ -10,8 +11,7 @@ import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import rateLimit from "express-rate-limit";
 import upload from "./configs/multerConfig.js";
-import cheerio from "cheerio";
-import { base64ToFile } from "./middleware/uploadImages.js";
+import createBirthDayWishes from "./utils/createBirthdayWishes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -37,6 +37,11 @@ app.use(cors());
 
 // Kết nối tới cơ sở dữ liệu
 connectDatabase();
+
+// Thiết lập công việc lên lịch kiểm tra sinh nhật hàng ngày lúc 0 giờ sáng
+cron.schedule("0 0 * * *", () => {
+  createBirthDayWishes();
+});
 
 // Define routes
 // Endpoint để phục vụ các tệp từ thư mục uploads

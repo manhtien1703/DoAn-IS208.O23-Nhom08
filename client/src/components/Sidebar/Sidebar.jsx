@@ -82,7 +82,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 <>
                   <li className="mb-2">
                     <Link
-                      to="dasboard"
+                      to="/manager-dashboard/dasboard"
                       className={` ${
                         pathname.includes("dasboard")
                           ? "bg-blue-700 text-white"

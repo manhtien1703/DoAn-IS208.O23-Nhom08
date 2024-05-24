@@ -138,6 +138,23 @@ const getAllUsersService = async () => {
 };
 
 /**
+ * Lấy tất cả người dùng
+ * @param {number} DepartmentID- ID của phòng ban
+ * @returns {Promise<Array>} - Trả về danh sách tất cả người dùng
+ */
+const getUsersInDepartmentService = async (DepartmentID) => {
+  try {
+    const users = await Employee.findAll({
+      where: { DepartmentID: DepartmentID },
+    });
+    return users;
+  } catch (error) {
+    console.error("Không thể lấy danh sách người dùng:", error);
+    throw error;
+  }
+};
+
+/**
  * Cập nhật thông tin của người dùng
  * @param {number} userId - ID của người dùng cần cập nhật
  * @param {Object} newData - Dữ liệu mới cần cập nhật
@@ -218,6 +235,7 @@ export {
   getUsersByDepartmentIDService,
   addUserService,
   getAllUsersService,
+  getUsersInDepartmentService,
   updateUserService,
   deleteUserService,
 };

@@ -10,6 +10,7 @@ Announcement.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
     },
     Title: {
       type: DataTypes.STRING,
