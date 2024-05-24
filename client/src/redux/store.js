@@ -11,10 +11,22 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage
 import authReducer from "./slices/authSlice";
+import { encryptTransform } from "redux-persist-transform-encrypt";
+
+const encryptionKey = "my-super-secret-key";
+
+const encryptionTransform = encryptTransform({
+  secretKey: encryptionKey,
+  onError: (error) => {
+    // Handle the error
+    console.error("Encryption error:", error);
+  },
+});
 
 const persistConfig = {
   key: "root",
   storage,
+  transforms: [encryptionTransform],
 };
 
 const persistedReducer = persistReducer(persistConfig, authReducer);

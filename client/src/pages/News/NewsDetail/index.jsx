@@ -19,7 +19,6 @@ export default function NewsDetail() {
         if (result.data.status === "error") {
           navigator("/notfound");
         } else {
-          console.log(result.data.news);
           setContentHtml(result.data.news.Content);
         }
       } catch (error) {

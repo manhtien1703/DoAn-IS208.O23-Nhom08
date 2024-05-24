@@ -65,15 +65,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center z-9999 justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <Link to="/">
-          <img src="images/logo.png" alt="Logo" />
+        <Link to="/" className="mx-auto">
+          <img src="/images/logo.png" alt="Logo" className="h-[150px]" />
         </Link>
       </div>
       {/* <!-- SIDEBAR HEADER --> */}
 
       <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
         {/* <!-- Sidebar Menu --> */}
-        <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
+        <nav className=" py-4 px-4 lg:mt-9 lg:px-6">
           {/* <!-- Menu Group --> */}
           <div>
             <ul className="mb-6 flex flex-col gap-1.5">

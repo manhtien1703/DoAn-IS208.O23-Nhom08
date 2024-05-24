@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import Employee from "./Employee";
+import Employee from "./Employee.js";
 import { sequelize } from "../configs/DBConfig.js";
 
 class LeaveRequest extends Model {}

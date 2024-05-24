@@ -54,6 +54,14 @@ Employee.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    Password: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    DateOfBirth: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     sequelize,

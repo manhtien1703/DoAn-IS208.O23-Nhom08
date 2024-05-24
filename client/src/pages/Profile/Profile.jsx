@@ -34,7 +34,7 @@ export default function Profile() {
   return (
     <DefaultLayout>
       <div className="flex flex-col min-h-screen md:flex-row p-4 bg-white dark:bg-zinc-800">
-        <div className="w-full max-h-56 lg:w-1/4 md:w-1/3 bg-zinc-100 dark:bg-zinc-700 p-4 rounded-lg shadow-md">
+        <div className="w-full max-h-72 lg:w-1/4 md:w-1/3 bg-zinc-100 dark:bg-zinc-700 p-4 rounded-lg shadow-md">
           <div className="mb-4">
             <h2 className="font-semibold text-lg dark:text-white">
               Bảng điều khiển
@@ -58,7 +58,7 @@ export default function Profile() {
               <li>
                 <Link
                   to="/manager-dashboard/dashboard"
-                  className=" w-full flex cursor-pointer p-2 pl-5 rounded gap-3 items-center"
+                  className=" w-full flex cursor-pointer p-2 pl-5 rounded gap-3 items-center  hover:border-blue-500 border-2 border-transparent "
                 >
                   Trang quản lý
                 </Link>

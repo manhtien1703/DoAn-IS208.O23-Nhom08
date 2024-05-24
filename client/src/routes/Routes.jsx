@@ -11,6 +11,7 @@ import Notification from "../pages/Notification";
 import AccessDeny from "../pages/AccessDeny";
 import ManagerDashboard from "../pages/Manager/Dashboard";
 import NotificationDetails from "../pages/Notification/NotificationDetails";
+import TextEditor from "../components/TextEditor/TextEditor";
 
 const WebRoutes = () => {
   return (
@@ -76,6 +77,7 @@ const WebRoutes = () => {
         path="/manager-dashboard/dashboard"
         element={<ManagerDashboard />}
       />
+      <Route path="/test" element={<TextEditor />} />
       <Route path="/*" element={<NotFound />} />
       <Route path="/access-deny" element={<AccessDeny />} />
     </Routes>

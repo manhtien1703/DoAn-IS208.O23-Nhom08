@@ -41,6 +41,11 @@ Announcement.init(
     IsGeneral: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
+      get() {
+        // Xử lý giá trị trường IsGeneral để trả về giá trị boolean thay vì số
+        const rawValue = this.getDataValue("IsGeneral");
+        return !!rawValue; // Chuyển đổi giá trị sang boolean
+      },
     },
   },
   {

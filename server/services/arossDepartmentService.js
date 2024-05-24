@@ -54,10 +54,6 @@ async function getCrossDepartmentRequestByID(requestID) {
 async function getAllCrossDepartmentRequests() {
   try {
     const requests = await CrossDepartmentRequest.findAll();
-    console.log(
-      "All cross-department requests:",
-      requests.map((request) => request.toJSON())
-    );
     return requests.map((request) => request.toJSON());
   } catch (error) {
     console.error("Error fetching cross-department requests:", error);
@@ -76,10 +72,6 @@ async function updateCrossDepartmentRequest(requestID, updatedInfo) {
     const request = await CrossDepartmentRequest.findByPk(requestID);
     if (request) {
       await request.update(updatedInfo);
-      console.log(
-        "Cross-department request updated successfully:",
-        request.toJSON()
-      );
     } else {
       console.error("Cross-department request not found");
     }

@@ -1,7 +1,19 @@
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "../../redux/slices/authSlice";
+import axios from "axios";
+import { serverURL } from "../../utils/server";
+import Notify from "../../components/Toast/Notify";
+import { getUserInfo } from "../../redux/action/authAction";
 
 const ProfileTab = () => {
-  const [userInfo, setUserInfo] = useState({});
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const [avatarURl, setAvatarURL] = useState(user.Avatar);
+  const [email, setEmail] = useState(user.Email);
+  const [phoneNumber, setPhoneNumber] = useState(user.PhoneNumber);
+  const [dateOfBirth, setDateOfBirth] = useState(user.DateOfBirth);
+  const [avatar, setAvatar] = useState(null);
   const fileInputRef = useRef(null);
 
   const pictureChangeButtonClick = () => {
@@ -10,35 +22,63 @@ const ProfileTab = () => {
 
   // Function to handle profile picture change
   const handlePictureChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setUserInfo({
-          ...userInfo,
-          profilePicture: e.target.result,
-        });
+    setAvatar(e.target.files[0]);
+    if (e.target.files[0]) {
+      const reader = new FileReader(); // Tạo một FileReader để đọc tệp ảnh
+      reader.onloadend = () => {
+        // Xử lý khi việc đọc tệp ảnh hoàn tất
+        const imageDataUrl = reader.result; // Đọc kết quả là một URL dữ liệu của ảnh
+        setAvatarURL(imageDataUrl); // Cập nhật state của user với ảnh đại diện mới
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(e.target.files[0]);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    setPhoneNumber(e.target.value);
+  };
+
+  const handleDateOfBirthChange = (e) => {
+    setDateOfBirth(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Process form data here (e.g., send to server)
-    console.log("Form submitted:", userInfo);
+    const formData = new FormData();
+    formData.append("EmployeeID", user.EmployeeID);
+    formData.append("Email", email);
+    formData.append("PhoneNumber", phoneNumber);
+    formData.append("DateOfBirth", dateOfBirth);
+    if (avatar) {
+      formData.append("avatar", avatar);
+    }
+
+    try {
+      const res = await axios.post(`${serverURL}/users/update`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      dispatch(getUserInfo(res.data.data));
+      Notify("success", "Cập nhật thông tin thành công");
+    } catch (error) {
+      Notify("error", "Cập nhật thông tin thất bại");
+      console.error("Error updating user:", error);
+      // Xử lý lỗi, ví dụ như hiển thị thông báo lỗi
+    }
   };
 
   useEffect(() => {
-    setUserInfo((prevState) => ({
-      ...prevState,
-      name: "Lê Công Hiếu",
-      email: "zxcv08122003@gmail.com",
-      cccd: "0123812791242",
-      phone: "02938743842",
-      positon: "Trưởng phòng",
-    }));
-  }, []);
+    setAvatarURL(user.Avatar);
+    setEmail(user.Email);
+    setPhoneNumber(user.PhoneNumber);
+    setAvatar(null);
+  }, [user]);
 
   return (
     <>
@@ -47,13 +87,13 @@ const ProfileTab = () => {
           <div className="flex items-center space-x-4 mb-4">
             <div className="flex-shrink-0">
               <img
-                src={userInfo?.profilePicture}
+                src={avatarURl}
                 alt="Profile Picture"
                 className="h-[150px] w-[150px] rounded-full border-2 border-gray-700"
               />
             </div>
             <div>
-              <h3 className="text-xl font-semibold">{userInfo.name}</h3>
+              <h3 className="text-xl font-semibold">{user?.name}</h3>
               <button
                 type="button"
                 onClick={pictureChangeButtonClick}
@@ -78,7 +118,7 @@ const ProfileTab = () => {
               </label>
               <input
                 type="text"
-                value={userInfo.name}
+                value={user.Role}
                 className="mt-1 block w-full px-3 py-2 border border-zinc-300 rounded-md"
                 disabled
               />
@@ -89,7 +129,7 @@ const ProfileTab = () => {
               </label>
               <input
                 type="text"
-                value={userInfo.cccd}
+                value={user.CCCD}
                 className="mt-1 block w-full px-3 py-2 border border-zinc-300 rounded-md"
                 disabled
               />
@@ -100,7 +140,8 @@ const ProfileTab = () => {
               </label>
               <input
                 type="email"
-                value={userInfo.email}
+                value={email}
+                onChange={handleEmailChange}
                 className="mt-1 block w-full px-3 py-2 border border-zinc-300 rounded-md"
               />
             </div>
@@ -110,7 +151,19 @@ const ProfileTab = () => {
               </label>
               <input
                 type="text"
-                value={userInfo.phone}
+                value={phoneNumber}
+                onChange={handlePhoneNumberChange}
+                className="mt-1 block w-full px-3 py-2 border border-zinc-300 rounded-md"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-zinc-700">
+                Ngày sinh
+              </label>
+              <input
+                type="date"
+                value={dateOfBirth}
+                onChange={handleDateOfBirthChange}
                 className="mt-1 block w-full px-3 py-2 border border-zinc-300 rounded-md"
               />
             </div>

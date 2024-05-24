@@ -1,10 +1,7 @@
-import { login, logout } from "../slices/authSlice";
+import { getInfo, logout } from "../slices/authSlice";
 
 export const getUserInfo = (user) => async (dispatch) => {
-  // add async login logic
-  const user = { user: user };
-
-  dispatch(login(user));
+  dispatch(getInfo(user));
 };
 
 export const logoutUser = () => async (dispatch) => {

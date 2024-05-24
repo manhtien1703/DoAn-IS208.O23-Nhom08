@@ -56,12 +56,10 @@ const Header = () => {
   useEffect(() => {
     const getNotification = async () => {
       try {
-        console.log(user.EmployeeID);
         const result = await axios.get(
           `${serverURL}/users/announcement?id=${user.EmployeeID}&limit=5`
         );
         setNewNotificationCount(parseInt(result.data.unseenCount));
-        console.log(result.data.announcements);
         setNotifications([...result.data.announcements]);
       } catch (error) {
         console.log(error.message);
@@ -74,7 +72,7 @@ const Header = () => {
     <header className=" top-0 w-full drop-shadow-lg  px-3 py-1 bg-orange-50">
       <nav className="relative flex justify-between">
         <div className=" w-[100px] md:w-[150px] flex items-center">
-          <img src="/images/logo.png" alt="LOGO" />
+          <img src="/images/logo.png" alt="LOGO" className="h-[100px]" />
         </div>
         <div className="flex items-center justify-center gap-3 ">
           <div className="navLinks rounded-md  bg-white  duration-500 absolute md:bg-transparent md:static md:w-auto w-full h-auto  flex md:items-center gap-[1.5vw] top-[120%] left-[-100%] -translate-x-5 md:translate-x-0 px-5 md:py-0 py-5">

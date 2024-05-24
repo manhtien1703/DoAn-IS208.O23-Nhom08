@@ -57,6 +57,7 @@ const notifications = [
 
 const Home = () => {
   const [newsData, setNewsData] = useState([]);
+  const [generalNotify, setGeneralNotify] = useState([]);
 
   useEffect(() => {
     const getNews = async () => {
@@ -69,6 +70,17 @@ const Home = () => {
       }
     };
 
+    const getGeneralNotify = async () => {
+      try {
+        const result = await axios.get(
+          `${serverURL}/announcement/general?limit=10`
+        );
+        setGeneralNotify(result.data.announcements);
+      } catch (error) {
+        Notify("error", error.message);
+      }
+    };
+    getGeneralNotify();
     getNews();
   }, []);
 
@@ -79,16 +91,19 @@ const Home = () => {
           <div className="bg-white dark:bg-zinc-700 shadow rounded-lg p-4 mb-4">
             <h2 className="font-bold text-xl mb-2">THÔNG BÁO CHUNG</h2>
             <ul>
-              {notifications.map((notification, index) => (
-                <li className="mb-2" key={index}>
-                  <a href="#" className="text-blue-500 hover:text-blue-600">
-                    {notification.title}
+              {generalNotify.map((notification, index) => (
+                <li className="mb-2 ml-5" key={index}>
+                  <Link
+                    to={`/notifications/${notification.AnnouncementID}`}
+                    className="text-blue-500 hover:text-blue-600"
+                  >
+                    {notification.Title}
 
                     <span className="text-gray-500">
                       {" "}
-                      - {notification.time}
+                      - {notification.CreatedAt.split("T")[0]}
                     </span>
-                  </a>
+                  </Link>
                 </li>
               ))}
 

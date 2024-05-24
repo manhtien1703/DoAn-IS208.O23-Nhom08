@@ -30,7 +30,6 @@ async function getNewsService(id) {
       news.CreatedAt = news.CreatedAt.toISOString();
       news.UpdatedAt = news.UpdatedAt.toISOString();
 
-      console.log("news:", news.toJSON());
       return news.toJSON();
     } else {
       console.log("News not found");
@@ -49,10 +48,6 @@ async function getNewsService(id) {
 async function getAllNewsService() {
   try {
     const allNews = await News.findAll();
-    console.log(
-      "All news:",
-      allNews.map((news) => news.toJSON())
-    );
     return allNews.map((news) => news.toJSON());
   } catch (error) {
     console.error("Error fetching news:", error);

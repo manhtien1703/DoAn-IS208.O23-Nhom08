@@ -53,7 +53,7 @@ export default function Notification() {
         setNotifications([...result.data.announcements]);
         setFilteredNotifications([...result.data.announcements]);
       } catch (e) {
-        console.log(e);
+        console.log(e.message);
       }
     };
     getNotifications();

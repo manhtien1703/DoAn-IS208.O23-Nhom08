@@ -1,4 +1,4 @@
-import LeaveRequest from "./models/leaverequest";
+import LeaveRequest from "../models/LeaveRequest.js";
 
 /**
  * Tạo một yêu cầu nghỉ phép mới.
@@ -47,16 +47,39 @@ async function getLeaveRequest(id) {
 }
 
 /**
+ * Đọc một yêu cầu nghỉ phép dựa trên EmployeeID.
+ * @param {number} EmployeeID - ID của nhân viên .
+ * @param {number} offset số yêu cầu bỏ qua.
+ * @param {number} limit Giới hạn số yêu cầu được trả về.
+ * @returns {Promise<object|null>} - Promise trả về yêu cầu nghỉ phép hoặc null nếu không tìm thấy.
+ */
+async function getLeaveRequestByUserID(EmployeeID, offset = 0, limit = null) {
+  try {
+    const option = {
+      where: {
+        EmployeeID: EmployeeID,
+      },
+      offset: offset,
+    };
+    if (limit) {
+      option.limit = limit;
+    }
+
+    const leaveRequests = await LeaveRequest.findAll(option);
+    return leaveRequests;
+  } catch (error) {
+    console.error("Error fetching leave request:", error);
+    throw error;
+  }
+}
+
+/**
  * Đọc tất cả các yêu cầu nghỉ phép.
  * @returns {Promise<object[]>} - Promise trả về một mảng các yêu cầu nghỉ phép.
  */
 async function getAllLeaveRequests() {
   try {
     const allLeaveRequests = await LeaveRequest.findAll();
-    console.log(
-      "All leave requests:",
-      allLeaveRequests.map((leaveRequest) => leaveRequest.toJSON())
-    );
     return allLeaveRequests.map((leaveRequest) => leaveRequest.toJSON());
   } catch (error) {
     console.error("Error fetching leave requests:", error);
@@ -111,6 +134,7 @@ async function deleteLeaveRequest(id) {
 export {
   createLeaveRequest,
   getLeaveRequest,
+  getLeaveRequestByUserID,
   getAllLeaveRequests,
   updateLeaveRequest,
   deleteLeaveRequest,

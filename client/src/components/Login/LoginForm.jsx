@@ -9,7 +9,6 @@ import { serverURL } from "../../utils/server";
 
 const LoginForm = ({ dispatch }) => {
   const navigate = useNavigate();
-  console.log(useSelector(selectUser));
 
   // Tạo state để lưu trữ email và password
   const [formData, setFormData] = useState({
@@ -37,6 +36,7 @@ const LoginForm = ({ dispatch }) => {
     if (result.data.status === "success") {
       Notify("success", "Đăng nhập thành công");
       navigate("/");
+      console.log(result.data.user);
       dispatch(getInfo(result.data.user));
     } else {
       console.log(result.message);

@@ -45,7 +45,6 @@ async function getAnnouncementService(id) {
   try {
     const announcement = await Announcement.findByPk(id);
     if (announcement) {
-      console.log("Announcement:", announcement.toJSON());
       return announcement.toJSON();
     } else {
       console.error("Announcement not found");
@@ -80,15 +79,18 @@ async function getAllAnnouncementsService() {
 async function getGeneralAnnouncementsService(limit = null, offset = 0) {
   try {
     const queryOptions = {
-      where: { IsGeneral: 1 },
-      offset: offset,
+      offset: parseInt(offset),
     };
     if (limit !== null && limit !== undefined) {
       queryOptions.limit = parseInt(limit);
     }
 
-    const allAnnouncements = await Announcement.findAll(queryOptions);
-    return allAnnouncements.map((announcement) => announcement.toJSON());
+    const allAnnouncements = await Announcement.findAll({
+      where: { IsGeneral: true }, // Chỉ lấy các thông báo có IsGeneral là true
+      order: [["AnnouncementID", "DESC"]],
+      ...queryOptions,
+    });
+    return allAnnouncements;
   } catch (error) {
     console.error("Error fetching announcements:", error);
     throw error;
@@ -124,7 +126,8 @@ async function getAnnouncementsByUserIDService(
     const queryOptions = {
       where: whereConditions,
       include: [{ model: Announcement }],
-      offset: offset,
+      order: [["AnnouncementID", "DESC"]],
+      offset: parseInt(offset),
     };
 
     if (limit !== null && limit !== undefined) {
@@ -193,7 +196,6 @@ async function updateAnnouncementService(id, title = null, content = null) {
         announcement.Content = content;
       }
       await announcement.save();
-      console.log("Announcement updated successfully:", announcement.toJSON());
       return announcement.toJSON();
     } else {
       console.error("Announcement not found");

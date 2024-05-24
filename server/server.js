@@ -9,6 +9,9 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import rateLimit from "express-rate-limit";
+import upload from "./configs/multerConfig.js";
+import cheerio from "cheerio";
+import { base64ToFile } from "./middleware/uploadImages.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -40,6 +43,26 @@ connectDatabase();
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/", router);
+
+app.post("/quill-upload-test", upload.array("images", 10), async (req, res) => {
+  const { editorData } = req.body;
+  const uploadedImages = req.files?.map((file) => file.filename);
+  console.log("uploadedImages ", uploadedImages);
+
+  const host = req.get("host");
+  const protocol = req.protocol;
+
+  console.log("Host: ", host, "protocol: ", protocol);
+
+  const modifiedEditorData = await editorData?.replace(
+    /src="data:image\/[^;]+;base64[^"]+"/g,
+    () => {
+      return `src="${protocol}://${host}/uploads/${uploadedImages.shift()}"`;
+    }
+  );
+  console.log(modifiedEditorData);
+  res.json({ editorData: modifiedEditorData });
+});
 
 // Set port và lắng nghe yêu cầu từ client
 const PORT = process.env.PORT || 5000;
