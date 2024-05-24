@@ -126,7 +126,7 @@ const Header = () => {
                                   : "text-blue-500"
                               }`}
                             >
-                              {notification.Announcement.Content}
+                              {notification.Announcement.Title}
                             </p>
                           </Link>
                         </li>
